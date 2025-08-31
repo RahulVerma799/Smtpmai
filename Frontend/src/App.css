@@ -1,0 +1,66 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f9fafb;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.email-form {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.email-form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.email-form label {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.email-form input,
+.email-form textarea {
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.email-form button {
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.email-form button:hover {
+  background: #1d4ed8;
+}
+
+.response {
+  margin-top: 20px;
+  background: #eef2ff;
+  padding: 15px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  font-size: 14px;
+  color: #1e3a8a;
+}
