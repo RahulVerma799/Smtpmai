@@ -63,7 +63,7 @@ function App() {
           formData.append("file", file);
         }
 
-        const res = await axios.post("http://localhost:4000/send", formData, {
+        const res = await axios.post("https://smtpmai.onrender.com/send", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
