@@ -3,33 +3,43 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-  const [emails, setEmails] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [rawEmails, setRawEmails] = useState(""); // raw input
+  const [subject, setSubject] = useState(
+    "Application for Full Stack Developer / ReactJS Developer / NodeJS Developer Role"
+  );
+  const [message, setMessage] = useState(`Hi,
+
+I am writing to express my interest in a Full Stack developer role (MERN Stack) position, as advertised on LinkedIn. My skills and experience are a perfect match for the job requirements, and I am excited about the opportunity to contribute to your team.
+my Portfolio=https://rahulportof.netlify.app
+
+Thank you for considering my application. I look forward to your reply.
+
+Best,
+Rahul Verma
++91-7991180409`);
   const [file, setFile] = useState(null);
   const [scheduleTime, setScheduleTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [response, setResponse] = useState(null);
 
-  // 🧹 Clean pasted emails (remove quotes, spaces, make comma-separated)
+  // Clean emails when sending
   const cleanEmails = (input) => {
     return input
       .replace(/["'\n\r]/g, " ") // remove quotes & new lines
       .split(/[\s,]+/) // split by spaces or commas
-      .filter((email) => email.includes("@")) // keep valid-looking
-      .join(", "); // join back with commas
+      .filter((email) => email.includes("@")) // basic check
+      .join(", "); // return cleaned, comma-separated string
   };
 
   const handleEmailsChange = (e) => {
-    const raw = e.target.value;
-    setEmails(cleanEmails(raw));
+    setRawEmails(e.target.value); // no cleaning while typing
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🕑 If schedule time is given, calculate delay
+    // 🕑 Delay if scheduled
     if (scheduleTime) {
       const sendTime = new Date(scheduleTime).getTime();
       const now = new Date().getTime();
@@ -42,7 +52,7 @@ function App() {
       }
     }
 
-    // else send immediately
+    // Else, send immediately
     sendEmails();
   };
 
@@ -51,12 +61,17 @@ function App() {
     setProgress(0);
 
     try {
-      const emailList = emails.split(",").map((e) => e.trim()).filter(Boolean);
+      const cleaned = cleanEmails(rawEmails);
+      const emailList = cleaned
+        .split(",")
+        .map((e) => e.trim())
+        .filter(Boolean);
+
       let results = [];
 
       for (let i = 0; i < emailList.length; i++) {
         const formData = new FormData();
-        formData.append("emails", emailList[i]); // send one by one
+        formData.append("emails", emailList[i]);
         formData.append("subject", subject);
         formData.append("message", message);
         if (file) {
@@ -68,7 +83,7 @@ function App() {
         });
 
         results.push(res.data);
-        setProgress(i + 1); // update progress after each
+        setProgress(i + 1);
       }
 
       setResponse({ message: "All emails sent!", results });
@@ -85,11 +100,11 @@ function App() {
       <form className="email-form" onSubmit={handleSubmit}>
         <h2>📧 Send Bulk Emails</h2>
 
-        <label>Email Addresses (paste multiple)</label>
+        <label>Email Addresses (type or paste multiple)</label>
         <textarea
           rows="3"
           placeholder={`test1@gmail.com\ntest2@yahoo.com\ntest3@gmail.com`}
-          value={emails}
+          value={rawEmails}
           onChange={handleEmailsChange}
           required
         />
@@ -105,7 +120,7 @@ function App() {
 
         <label>Message</label>
         <textarea
-          rows="5"
+          rows="10"
           placeholder="Write your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -130,14 +145,12 @@ function App() {
         </button>
       </form>
 
-      {/* Progress Section */}
       {loading && (
         <div className="progress">
           <p>Sending... {progress} sent</p>
         </div>
       )}
 
-      {/* Response Section */}
       {response && (
         <div className="response">
           <h3>Server Response:</h3>
